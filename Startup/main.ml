@@ -26,7 +26,7 @@ let check_age age =
   let year = int_of_string (String.sub age (len - 4) 4) in
   match year with
   | x when get_current_year () - x >= 18 ->
-      ANSITerminal.print_string [ ANSITerminal.red ]
+      ANSITerminal.print_string [ ANSITerminal.green ]
         "You are old enough, (next step not implemented)"
   | _ ->
       ANSITerminal.print_string [ ANSITerminal.red ]
@@ -60,7 +60,8 @@ let rec terms_and_cond () =
       ANSITerminal.print_string [ ANSITerminal.red ]
         "Unfortunately, you must agree to the terms to use the platform"
   | _ ->
-      print_string "This is not a valid respose";
+      ANSITerminal.print_string [ ANSITerminal.red ]
+        "This is not a valid respose\n";
       terms_and_cond ()
 
 (**Main fucntion that starts up the program and sends a user to the terms and
