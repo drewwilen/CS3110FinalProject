@@ -1,0 +1,3 @@
+In order to run you will need to install a few packages to do so you can run the following commands in your terminal:
+
+opam install ANSITerminal
