@@ -27,7 +27,7 @@ let check_age age =
   match year with
   | x when get_current_year () - x >= 18 ->
       ANSITerminal.print_string [ ANSITerminal.red ]
-        "Unfortunately, you are not old enough to use our platform\n"
+        "You are old enough, (next step not implemented)"
   | _ ->
       ANSITerminal.print_string [ ANSITerminal.red ]
         "Unfortunately, you are not old enough to use our platform\n"
@@ -47,8 +47,8 @@ let age () =
    disagree to the terms and conditons. If the user agrees they are sent to the
    age verification step, if not a message that the user may not use this
    platform without agreeing is presented*)
-let terms_and_cond () =
-  let terms_andcond = file_reader "ui/terms.txt" in
+let rec terms_and_cond () =
+  let terms_andcond = file_reader "Startup/terms.txt" in
   List.iter (fun line -> print_endline line) terms_andcond;
 
   ANSITerminal.print_string [ ANSITerminal.blue ]
@@ -60,8 +60,8 @@ let terms_and_cond () =
       ANSITerminal.print_string [ ANSITerminal.red ]
         "Unfortunately, you must agree to the terms to use the platform"
   | _ ->
-      ANSITerminal.print_string [ ANSITerminal.red ]
-        "Please input either Y or N as a response"
+      print_string "This is not a valid respose";
+      terms_and_cond ()
 
 (**Main fucntion that starts up the program and sends a user to the terms and
    condtions*)
@@ -75,7 +75,7 @@ let main () =
 
   ANSITerminal.print_string [ ANSITerminal.blue ]
     "Before you can start using our platform, we will need to verify some of \
-     your information. Please press any button to continue ";
+     your information. Please press enter to continue ";
   print_string "> ";
   match read_line () with
   | _ -> terms_and_cond ()
