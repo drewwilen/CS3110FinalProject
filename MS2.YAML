@@ -1,0 +1,26 @@
+---
+group:
+  - name: David Goldfarb
+    netid: dg646
+  - name: Max Gordon
+    netid: mrg263
+  - name: Andrew Lowitt
+    netid: ael254
+  - name: Drew Wilenzick
+    netid: ddw77
+pm:
+  name: Raymond Lin
+  netid: rl569
+publish: true
+title: "Psi Capital"
+git-repo: "https://github.coecis.cornell.edu/ddw77/3110-final-project"
+demo-video-url: ""
+desc: >
+Though currently only including the basic implementation for a user agreement and age-checking,
+our brokerage platform will use a SQL Database management system to offer interactive
+modeling technology for analyzing stocks as well as functionality for users to buy and
+sell stocks, options, ETFs, and potentially more. The platform will allow users to 
+easily manage and interact with their personal portfolios, and look at individual stocks,
+allowing them to live-track stocks. As a stretch goal, 
+we hope to implement work on algorithms to trade on.
+
