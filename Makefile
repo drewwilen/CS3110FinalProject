@@ -3,8 +3,8 @@ run:
 	OCAMLRUNPARAM=b dune exec Startup/main.exe
 
 zip:
-	rm -f search.zip
-	zip -r search.zip . -x@exclude.lst
+	rm -f psi_capital.zip
+	zip -r psi_capital.zip .
 
 clean: 
 	dune clean
