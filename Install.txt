@@ -1,3 +1,5 @@
 In order to run you will need to install a few packages to do so you can run the following commands in your terminal:
 
 opam install ANSITerminal
+
+After you have installed ANSITerminal you can run the program in the terminal by calling make run
