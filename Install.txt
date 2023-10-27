@@ -3,3 +3,8 @@ In order to run you will need to install a few packages to do so you can run the
 opam install ANSITerminal
 
 After you have installed ANSITerminal you can run the program in the terminal by calling make run
+
+To run scraping you must run the following commands: 
+
+opam install Unit
+opam install tls-lwt
