@@ -8,3 +8,8 @@ To run scraping you must run the following commands:
 
 opam install Unit
 opam install tls-lwt
+opam install Yojson
+opam install cohttp
+opam install cohttp-lwt-unix  
+ 
+If you would like to run it with th emake file you should edit the make run config to be OCAMLRUNPARAM=b dune exec Scraping/main.exe

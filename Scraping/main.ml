@@ -2,7 +2,7 @@ open Unit
 open Yojson.Basic.Util
 
 let base_url = "https://api.polygon.io"
-let api_key = "jn_NAmtAD16hk6azpunzVK1TEvKiu5vy"
+let api_key = "d_4M0nRmvVNVD7sPBita_pPrRNVMDuJx"
 
 let get_ticker_info ticker =
   let endpoint =
