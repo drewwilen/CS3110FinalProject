@@ -4,6 +4,12 @@ open Yojson.Basic.Util
 let base_url = "https://api.polygon.io"
 let api_key = "d_4M0nRmvVNVD7sPBita_pPrRNVMDuJx"
 
+let to_float_strict json =
+  match json with
+  | `Int i -> float_of_int i
+  | `Float f -> f
+  | _ -> failwith "Invalid JSON type for conversion to float"
+
 let get_ticker_info ticker =
   let endpoint =
     "/v2/aggs/ticker/" ^ ticker ^ "/prev?adjusted=true&apiKey=" ^ api_key
@@ -19,19 +25,19 @@ let get_ticker_info ticker =
 
   let open_price =
     body_json |> member "results" |> to_list |> List.hd |> member "o"
-    |> to_float
+    |> to_float_strict
   in
   let high_price =
     body_json |> member "results" |> to_list |> List.hd |> member "h"
-    |> to_float
+    |> to_float_strict
   in
   let low_price =
     body_json |> member "results" |> to_list |> List.hd |> member "l"
-    |> to_float
+    |> to_float_strict
   in
   let close_price =
     body_json |> member "results" |> to_list |> List.hd |> member "c"
-    |> to_float
+    |> to_float_strict
   in
 
   ignore (Unix.close_process_in ic);
