@@ -1,6 +1,6 @@
 
 run:
-	OCAMLRUNPARAM=b dune exec Startup/main.exe
+	OCAMLRUNPARAM=b dune exec Scraping/main.exe
 
 zip:
 	rm -f psi_capital.zip
