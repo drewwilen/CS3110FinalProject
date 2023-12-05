@@ -1,2 +1,3 @@
-(executable
- (name user))
+(library
+ (name user)
+ (public_name User))

@@ -49,5 +49,13 @@ module StockScraping = struct
 
     { open_price; high_price; low_price; close_price }
 
-  let to_string stock = "open price: " ^ string_of_float stock.open_price
+  let to_string stock =
+    "open price: "
+    ^ string_of_float stock.open_price
+    ^ "\nhigh price: "
+    ^ string_of_float stock.high_price
+    ^ "\nlow price: "
+    ^ string_of_float stock.low_price
+    ^ "\nclose price: "
+    ^ string_of_float stock.close_price
 end

@@ -16,6 +16,9 @@ val stocks : t -> string list
 (** The equivalent of a to_string function. Takes in a portfolio and returns a
     string of the stocks in that portfolio*)
 
+val print_portfolio : t -> unit
+(* prints out the portfolio *)
+
 val lookup : key -> t -> value option
 (** Takes in a key and a portfolio. Outputs some value if the stock is in the
     portfolio, None if nothing *)
