@@ -9,11 +9,13 @@ type value = {
   dividend : float option;
 }
 
-type t = key * value list
+type t = (key * value) list
 
 let empty = []
-let is_empty t = failwith "Unimplemented"
+let portfolio = failwith "unimplemented"
+let is_empty t = List.length t = 0
 let stocks t = failwith "Unimplemented"
+let print_portfolio t = failwith "Unimplemented"
 let lookup k t = failwith "Unimplemented"
 let value t = failwith "Unimplemented"
 let buy k n t = failwith "Unimplemented"

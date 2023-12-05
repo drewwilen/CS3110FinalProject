@@ -84,7 +84,7 @@ let main () =
       terms_and_cond ();
 
       ANSITerminal.print_string [ ANSITerminal.blue ]
-        "Enter a stock ticker to check";
+        "Enter a stock ticker to check ";
       match read_line () with
       | e -> print_string StockScraping.(to_string (get_ticker_info e)))
 
