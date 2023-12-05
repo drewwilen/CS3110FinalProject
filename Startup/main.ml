@@ -1,4 +1,6 @@
+open StockScraping
 (**Method to open and read file*)
+
 let file_reader filename =
   let open_file = open_in filename in
   let rec read_lines acc =
@@ -26,8 +28,7 @@ let check_age age =
   let year = int_of_string (String.sub age (len - 4) 4) in
   match year with
   | x when get_current_year () - x >= 18 ->
-      ANSITerminal.print_string [ ANSITerminal.green ]
-        "You are old enough, (next step not implemented)"
+      ANSITerminal.print_string [ ANSITerminal.green ] "You are old enough \n"
   | _ ->
       ANSITerminal.print_string [ ANSITerminal.red ]
         "Unfortunately, you are not old enough to use our platform\n"
@@ -79,6 +80,12 @@ let main () =
      your information. Please press enter to continue ";
   print_string "> ";
   match read_line () with
-  | _ -> terms_and_cond ()
+  | _ -> (
+      terms_and_cond ();
+
+      ANSITerminal.print_string [ ANSITerminal.blue ]
+        "Enter a stock ticker to check";
+      match read_line () with
+      | e -> print_string StockScraping.(to_string (get_ticker_info e)))
 
 let () = main ()
