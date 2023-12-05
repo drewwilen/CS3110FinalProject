@@ -8,3 +8,8 @@ zip:
 
 clean: 
 	dune clean
+
+build:
+	dune build
+
+
