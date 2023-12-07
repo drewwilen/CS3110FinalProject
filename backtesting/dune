@@ -1,2 +1,3 @@
 (executable
- (name backtest))
+ (name backtest)
+ (libraries csv))
