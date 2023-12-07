@@ -1,10 +1,10 @@
 type key
+type stock
 type value
 type t
 
-val portfolio : t
-(** A hash table where the Key represents a stock and the value is a record with
-    the relevant data*)
+(* val portfolio : t (** A hash table where the Key represents a stock and the
+   value is a record with the relevant data*) *)
 
 val empty : t
 (** Initializes an empty portfolio*)
@@ -26,7 +26,10 @@ val lookup : key -> t -> value option
 val value : t -> int
 (** Takes in a portfolio and outputs the total value of stocks contained*)
 
-val buy : key -> int -> t -> t
+val make_stock : string -> float -> stock
+(* Initialize a stock into acceptable format for buying and selling *)
+
+val buy : stock -> int -> t -> t
 (** Purchase a amount of stocks and add that to an portfolio. The equivalent of
     add *)
 
