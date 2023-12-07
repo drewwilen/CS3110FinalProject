@@ -9,7 +9,6 @@ let read_csv_file (file_path : string) : string list list =
   let rows = Csv.input_all csv_channel in
   (* Return the rows read from the CSV file *)
   rows
-
 (* let s_and_p = [ "MMM"; "ABT"; "ABBV"; "ACN"; "ATVI"; "AYI"; "ADBE"; "AMD";
    "AAP"; "AES"; "AET"; "AMG"; "AFL"; "A"; "APD"; "AKAM"; "ALK"; "ALB"; "ARE";
    "ALXN"; "ALGN"; "ALLE"; "AGN"; "ADS"; "LNT"; "ALL"; "GOOGL"; "GOOG"; "MO";
