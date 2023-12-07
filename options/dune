@@ -1,2 +1,4 @@
 (executable
- (name options))
+ (name Options)
+ (libraries Owl))
+
