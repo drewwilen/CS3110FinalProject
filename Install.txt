@@ -6,7 +6,7 @@ After you have installed ANSITerminal you can run the program in the terminal by
 
 To run scraping you must run the following commands: 
 
-opam install Unit
+opam install Unit (What is this? Doesnt come up in opam)
 opam install tls-lwt
 opam install Yojson
 opam install cohttp
@@ -14,4 +14,4 @@ opam install cohttp-lwt-unix
 opam install csv
 
  
-If you would like to run it with th emake file you should edit the make run config to be OCAMLRUNPARAM=b dune exec Scraping/main.exe
+If you would like to run it with the make file you should edit the make run config to be OCAMLRUNPARAM=b dune exec Scraping/main.exe
