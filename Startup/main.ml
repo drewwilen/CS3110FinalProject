@@ -1,7 +1,6 @@
 open StockScraping
 
 (**Method to open and read file*)
-
 let file_reader filename =
   let open_file = open_in filename in
   let rec read_lines acc =
