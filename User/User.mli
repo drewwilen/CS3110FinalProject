@@ -39,3 +39,7 @@ val sell : stock -> int -> t -> t
 
 val update : stock -> t -> t
 (** Updates the information about a stock to update a certain portfolio*)
+
+val to_backtest : t -> (string * int) list
+(** From a portfolio, returns an association list of string * int of the tickers
+    you have in the portfolio, and how many shares you have invested in it *)

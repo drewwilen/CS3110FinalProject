@@ -16,7 +16,7 @@ type value = {
 
 type login = string * string
 type t = (key * value) list
-type users = login * t list
+type users = (login * t) list
 
 let empty = []
 let is_empty t = List.length t = 0
@@ -90,3 +90,8 @@ let update updated_stock portfolio =
           price := !(updated_stock.price));
       portfolio
   | None -> portfolio
+
+let rec to_backtest portfolio =
+  match portfolio with
+  | [] -> []
+  | (ticker, stock) :: t -> (ticker, stock.shares) :: to_backtest t
