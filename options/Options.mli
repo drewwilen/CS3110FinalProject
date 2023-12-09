@@ -1,14 +1,39 @@
-type input
+(* options_trading.ml *)
 
-(* A list containing all valid stocks that can be backtested from 2013 to
-   2018 *)
-val s_and_p : string list
+type option_type
 
-(* A function that takes in a stock in the form of a ticker/string, an amount of
-   time, an interval of time and outputs the gain/loss of that stock over each
-   interval *)
-val stock_performance : string -> int -> int -> float
+(* Define a record type for representing an options contract *)
+type option_contract = {
+  underlying_price : float;
+  strike_price : float;
+  time_to_expiry : float;
+  volatility : float;
+  interest_rate : float;
+  option_type : option_type;
+  steps : int;
+}
 
-(* A function that takes in an input an amount of time, an interval of time and
-   outputs the gain/loss of that stock over each interval *)
-val test_portfolio : input -> int -> float
+(* Updates the options contract based on factors that change over time so its current value can be found *)
+val updated_contract : option_contract -> float -> float -> float -> float -> option_contract
+
+(* Represents the cumulative distribution function for a standard normal variable *)
+val cdf : float -> float
+
+(* Represents the probability distribution function for a standard normal variable *)
+val pdf : float -> float
+
+(* Black-Scholes formula for European call option pricing *)
+val black_scholes_price : option_contract -> float
+
+(* Greeks: Delta, Gamma, Theta, Vega *)
+val delta : option_contract -> float
+val gamma : option_contract -> float
+val theta : option_contract -> float
+val vega : option_contract -> float
+
+(* Implied volatility calculation using Newton's method *)
+val implied_volatility : option_contract -> float -> float
+
+(* Binomial method for call option pricing*)
+val binomial_price : option_contract -> float
+
