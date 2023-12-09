@@ -14,6 +14,7 @@ type value = {
   dividend : float option;
 }
 
+
 type login = string * string
 type t = (key * value) list
 type users = (login * t) list

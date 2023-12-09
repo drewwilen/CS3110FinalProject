@@ -1,5 +1,8 @@
 
 run:
+	OCAMLRUNPARAM=b dune exec Startup/main.exe
+
+backtest:
 	OCAMLRUNPARAM=b dune exec backtesting/backtest.exe
 
 zip:
@@ -11,5 +14,11 @@ clean:
 
 build:
 	dune build
+
+poop:
+	OCAMLRUNPARAM=b dune exec Startup/main.exe
+
+cloc:
+	OCAMLRUNPARAM=b cloc --by-file --include-lang=OCaml .
 
 
