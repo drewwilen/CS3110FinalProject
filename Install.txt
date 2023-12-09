@@ -12,6 +12,7 @@ opam install Yojson
 opam install cohttp
 opam install cohttp-lwt-unix  
 opam install csv
+opam install owl
 
  
 If you would like to run it with the make file you should edit the make run config to be OCAMLRUNPARAM=b dune exec Scraping/main.exe

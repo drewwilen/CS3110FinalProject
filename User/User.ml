@@ -13,7 +13,7 @@ type value = {
   dividend : float option;
 }
 
-type t = (key * value) list
+type t = key * value list
 
 let empty = []
 let is_empty t = List.length t = 0
