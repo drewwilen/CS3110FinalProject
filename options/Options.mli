@@ -36,3 +36,4 @@ val implied_volatility : option_contract -> float -> float
 
 (* Binomial method for call option pricing*)
 val binomial_price : option_contract -> float
+
