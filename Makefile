@@ -1,5 +1,8 @@
 
 run:
+	OCAMLRUNPARAM=b dune exec Startup/main.exe
+
+backtest:
 	OCAMLRUNPARAM=b dune exec backtesting/backtest.exe
 
 zip:
