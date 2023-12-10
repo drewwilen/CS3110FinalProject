@@ -1,4 +1,2 @@
-(executable
-;  (name Options)
-;  (libraries Owl))
-
+(library
+ (name Options))
