@@ -21,4 +21,16 @@ poop:
 cloc:
 	OCAMLRUNPARAM=b cloc --by-file --include-lang=OCaml .
 
+doc:
+	dune build @doc
+
+openuserdoc: doc
+	@bash opendoc.sh User
+
+openoptionsdoc: doc
+	@bash opendoc.sh Options
+
+openbacktestdoc: doc
+	@bash opendoc.sh backtest
+
 
