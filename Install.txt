@@ -14,4 +14,4 @@ brew install cloc (if you want to run the make cloc command for lines of code in
 
 
  
-If you would like to run the program call 'make platform'
+If you would like to run the program expand your terminal and call 'make platform'
