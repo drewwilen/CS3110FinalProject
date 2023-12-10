@@ -1,4 +1,4 @@
-
+.PHONY: test 
 run:
 	OCAMLRUNPARAM=b dune exec Startup/main.exe
 
@@ -14,6 +14,8 @@ clean:
 
 build:
 	dune build
+test:
+	OCAMLRUNPARAM=b dune exec test/main.exe
 
 platform:
 	OCAMLRUNPARAM=b dune exec Startup/main.exe
@@ -32,5 +34,7 @@ openoptionsdoc: doc
 
 openbacktestdoc: doc
 	@bash opendoc.sh backtest
+
+
 
 
