@@ -16,10 +16,16 @@ type value = {
 
 type login = string * string
 type t = (key * value) list
-type users = (login * t) list
+type user = login * t
+type users = user list
 
 let empty = []
 let is_empty t = List.length t = 0
+
+let make_user (username : string) (password : string) =
+  ((username, password), empty)
+
+let get_portfolio (user : user) = snd user
 
 let stock_to_string (s : value) (i : int) =
   "\nPortfolio Stock # " ^ string_of_int i ^ "\nTicker " ^ s.stock.ticker ^ "s"

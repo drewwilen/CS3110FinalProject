@@ -2,10 +2,18 @@ type key
 type stock
 type value
 type t
+type user
 type users
 
 (* val portfolio : t (** A hash table where the Key represents a stock and the
    value is a record with the relevant data*) *)
+
+val make_user : string -> string -> user
+(* [make_user username password] Creates a user with username [username],
+   password [password], the empty portfolio *)
+
+val get_portfolio : user -> t
+(* [get_portfolio a] returns the portfolio of a given user *)
 
 val empty : t
 (** Initializes an empty portfolio*)
