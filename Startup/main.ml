@@ -71,6 +71,65 @@ let is_valid_date_format s =
 
 (**code for the main menu*)
 let rec main_menu user username password =
+  let create_contract () =
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "To create an options contract please first enter the stock you would \
+         like it to be based on\n");
+    let underlying = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Next enter your desired strike price\n");
+    let strike = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Next enter your desired time to expiration in days price\n");
+    let time = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Finally enter if it is a call or put\n");
+    let type_o = read_line_with_prompt "> " in
+    match type_o with
+    | "put" | "Put" ->
+        Options.print_option_contract
+          (Options.create_contract
+             (StockScraping.get_price
+                (StockScraping.get_ticker_info underlying))
+             (float_of_string strike) (float_of_string time) 0.5 0.5 Put 5)
+    | "Call" | "call" ->
+        Options.print_option_contract
+          (Options.create_contract
+             (StockScraping.get_price
+                (StockScraping.get_ticker_info underlying))
+             (float_of_string strike) (float_of_string time) 0.5 0.5 Call 5)
+    | _ -> (
+        print_endline "invalid contract";
+        ANSITerminal.(
+          printf [ Bold; Foreground Cyan ]
+            "Press any button to return to the main menu\n");
+        let menu = read_line_with_prompt "> " in
+        match menu with
+        | _ -> main_menu user username password)
+  in
+
+  let options_functionality () =
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Welcome to the PSI Capital options chain");
+    Printf.printf "If you would like to create an option press 'O'\n";
+    Printf.printf "If you would like to buy a stock press 'B'\n";
+    Printf.printf "If you would like to sell a stock press 'S'\n";
+    Printf.printf "If you would like to view your portfolio press 'P'\n";
+    Printf.printf "If you would like to backtest your portfolio enter 'Test'\n";
+    Printf.printf "If you would like to lookup a stock option 'O'\n";
+    Printf.printf "%s\n" (String.make 75 '-');
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | "O" ->
+        Printf.printf "You selected to look up the price of a stock.\n";
+        create_contract ()
+    | _ -> Printf.printf "You selected to buy a stock.\n"
+  in
+
   let get_info stock =
     ANSITerminal.erase Screen;
 
@@ -269,6 +328,9 @@ let rec main_menu user username password =
   | "TEST" ->
       Printf.printf "You selected to backtest a stock.\n";
       backtest_screen ()
+  | "O" ->
+      Printf.printf "You selected to backtest a stock.\n";
+      options_functionality ()
   (* Add stock lookup logic here *)
   | _ ->
       Printf.printf "Invalid option. Please try again.\n";
@@ -394,12 +456,6 @@ let main () =
      your information. Please press enter to continue ";
   print_string "> ";
   match read_line () with
-  | _ -> (
-      terms_and_cond ();
-
-      ANSITerminal.print_string [ ANSITerminal.blue ]
-        "Enter a stock ticker to check ";
-      match read_line () with
-      | e -> print_string StockScraping.(to_string (get_ticker_info e)))
+  | _ -> terms_and_cond ()
 
 let () = main ()
