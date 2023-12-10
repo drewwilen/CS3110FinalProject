@@ -58,4 +58,7 @@ module StockScraping = struct
     ^ string_of_float stock.low_price
     ^ "\nclose price: "
     ^ string_of_float stock.close_price
+    ^ "\n"
+
+  let get_price stock = stock.close_price
 end
