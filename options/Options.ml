@@ -1,5 +1,6 @@
 (* options_trading.ml *)
 
+
 (* Option type representing call or put *)
 type option_type =
   | Call
@@ -15,6 +16,19 @@ type option_contract = {
   option_type : option_type;
   steps : int; (* Number of steps in the binomial model *)
 }
+
+let erf x =
+  let a1 = 0.254829592 in
+  let a2 = -0.284496736 in
+  let a3 = 1.421413741 in
+  let a4 = -1.453152027 in
+  let a5 = 1.061405429 in
+  let p = 0.3275911 in
+  let sign = if x < 0.0 then -1.0 else 1.0 in
+  let x = abs_float x in
+  let t = 1.0 /. (1.0 +. p *. x) in
+  let y = 1.0 -. (((((a5 *. t +. a4) *. t) +. a3) *. t +. a2) *. t +. a1) *. t *. exp (-. x *. x) in
+  sign *. y;;
 
 let print_underlying_price (contract : option_contract) =
   print_endline
@@ -52,29 +66,15 @@ let update_contract (contract : option_contract) (updated_price : float)
     steps = contract.steps;
   }
 
-let execute_contract = failwith "unimplemented"
+let execute_contract (contract : option_contract) =
+  match contract.option_type with
+    | Call -> if contract.time_to_expiry<=0. then contract.underlying_price<=contract.strike_price else false
+    | Put -> if contract.time_to_expiry<=0. then contract.underlying_price>=contract.strike_price else false
 
 (* Cumulative distribution function for the standard normal distribution *)
 let cdf (x : float) : float =
-  let a1 = 0.319381530 in
-  let a2 = -0.356563782 in
-  let a3 = 1.781477937 in
-  let a4 = -1.821255978 in
-  let a5 = 1.330274429 in
-  let k = 1.0 /. (1.0 +. (0.2316419 *. abs_float x)) in
-  let n' = 1.0 /. sqrt (2.0 *. Float.pi) in
-  let exp_value = exp (-0.5 *. x *. x) in
-  let sgn = if x < 0.0 then -1.0 else 1.0 in
-  let res =
-    sgn
-    *. (n' *. exp_value
-       *. ((a1 *. k)
-          +. (a2 *. (k *. k))
-          +. (a3 *. (k *. k *. k))
-          +. (a4 *. (k *. k *. k *. k))
-          +. (a5 *. (k *. k *. k *. k *. k))))
-  in
-  0.5 +. res
+  (*1. /. (1. +. 2.*. exp(-.sqrt(2. *. Float.pi)*.x))*)
+  (1. +. erf (x/.(sqrt 2.)))/.2.
 
 (* Probability density function for the standard normal distribution *)
 let pdf (x : float) : float =
@@ -88,16 +88,14 @@ let black_scholes_price (contract : option_contract) : float =
   let t = contract.time_to_expiry in
   let v = contract.volatility in
   let r = contract.interest_rate in
-  let option_type_multiplier =
-    match contract.option_type with
-    | Call -> 1.0
-    | Put -> -1.0
-  in
 
   let d1 = (log (s /. k) +. ((r +. (v *. v /. 2.0)) *. t)) /. (v *. sqrt t) in
   let d2 = d1 -. (v *. sqrt t) in
 
-  option_type_multiplier *. ((s *. cdf d1) -. (k *. exp (-.r *. t) *. cdf d2))
+  match contract.option_type with
+    | Call -> (s*. (cdf d1)) -. (k*.exp(-.r*.t)*.(cdf d2))
+    | Put -> (k*.exp(-.r*.t)*.(cdf (-.d2))) -. (s*. (cdf (-.d1)))
+
 
 (* Greeks: Delta, Gamma, Theta, Vega *)
 let delta (contract : option_contract) : float =
@@ -125,44 +123,30 @@ let gamma (contract : option_contract) : float =
   pdf d1 /. (s *. v *. sqrt t)
 
 let rho (contract : option_contract) : float =
-  let t = contract.time_to_expiry in
-  let r = contract.interest_rate in
-  let option_type_multiplier =
-    match contract.option_type with
-    | Call -> 1.0
-    | Put -> -1.0
-  in
-  let d1 =
-    (log (contract.underlying_price /. contract.strike_price)
-    +. ((r +. (contract.volatility *. contract.volatility /. 2.0)) *. t))
-    /. (contract.volatility *. sqrt t)
-  in
-  let d2 = d1 -. (contract.volatility *. sqrt t) in
-  option_type_multiplier
-  *. (contract.strike_price *. t
-     *. exp (-.r *. t)
-     *. cdf (option_type_multiplier *. d2))
-
-let theta (contract : option_contract) : float =
   let s = contract.underlying_price in
+  let k = contract.strike_price in
   let t = contract.time_to_expiry in
   let v = contract.volatility in
   let r = contract.interest_rate in
-  let d1 =
-    (log (s /. contract.strike_price) +. ((r +. (v *. v /. 2.0)) *. t))
-    /. (v *. sqrt t)
-  in
+
+  let d1 = (log (s /. k) +. ((r +. (v *. v /. 2.0)) *. t)) /. (v *. sqrt t) in
   let d2 = d1 -. (v *. sqrt t) in
-  let option_type_multiplier =
-    match contract.option_type with
-    | Call -> 1.0
-    | Put -> -1.0
-  in
-  option_type_multiplier
-  *. ((-1. *. s *. pdf d1 *. v /. (2.0 *. sqrt t))
-     +. r *. contract.strike_price
-        *. exp (-.r *. t)
-        *. cdf (option_type_multiplier *. d2))
+  match contract.option_type with
+    | Call -> k*.t*. exp(-.r*.t) *. cdf (d2)
+    | Put -> -.k*.t*. exp(-.r*.t) *. cdf (d2)
+
+let theta (contract : option_contract) : float =
+  let s = contract.underlying_price in
+  let k = contract.strike_price in
+  let t = contract.time_to_expiry in
+  let v = contract.volatility in
+  let r = contract.interest_rate in
+
+  let d1 = (log (s /. k) +. ((r +. (v *. v /. 2.0)) *. t)) /. (v *. sqrt t) in
+  let d2 = d1 -. (v *. sqrt t) in
+  match contract.option_type with
+    | Call -> -.((s*.(pdf d1)*.v)/.(2.*.(sqrt(t)))) -. (r*.k*.exp(-.r*.t)*. (cdf d2))
+    | Put -> -.(s*.(pdf d1)*.v)/.(2.*.(sqrt(t))) +. (r*.k*.exp(-.r*.t)*. (cdf (-.d2)))
 
 let vega (contract : option_contract) : float =
   let s = contract.underlying_price in
