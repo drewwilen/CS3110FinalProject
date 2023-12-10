@@ -12,6 +12,16 @@ val make_user : string -> string -> user
 (* [make_user username password] Creates a user with username [username],
    password [password], the empty portfolio *)
 
+val empty_users : users
+(* empty_users is an empty set of users that can then be added to *)
+
+val add_user : user -> users -> users
+(* [add_users u users] adds u to the group of users that have portfolios*)
+
+val login_attempt : string -> string -> users -> t option
+(* [login_attempt u p user] returns None if the password and username are not
+   found in the users, and returns some portfolio if it is found in the users *)
+
 val make_user_from_portfolio : string -> string -> t -> user
 (* [make_user username password portfolio] Creates a user with username
    [username], password [password], and the portfolio [portfolio] *)
@@ -52,8 +62,9 @@ val buy : stock -> int -> t -> t
 (** Purchase a amount of stocks and add that to an portfolio. The equivalent of
     add *)
 
-val sell : stock -> int -> t -> t
-(** Sell an amount of stocks in the existing portfolio. The equivalent of remove*)
+val sell : string -> int -> t -> t
+(** Sell an amount of stocks in the existing portfolio. If the stock is not in
+    the portfolio, returns unchanged portfolio*)
 
 val update_stock : stock -> float -> float
 (** Updates the price of a stock. Portfolios that contain it will be updated

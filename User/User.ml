@@ -28,6 +28,21 @@ let make_user (username : string) (password : string) =
 let make_user_from_portfolio (username : string) (password : string) portfolio =
   ((username, password), portfolio)
 
+let empty_users = []
+
+let rec add_user u users =
+  match users with
+  | [] -> [ u ]
+  | t :: [] -> t :: [ u ]
+  | h :: t -> h :: add_user u t
+
+let rec login_attempt username password users =
+  match users with
+  | [] -> None
+  | ((user, pass), portfolio) :: t ->
+      if user = username && pass = password then Some portfolio
+      else login_attempt username password t
+
 let get_portfolio (user : user) = snd user
 
 let stock_to_string (s : value) (i : int) =
@@ -83,11 +98,11 @@ let buy stock num portfolio =
     } )
   :: portfolio
 
-let sell stock num portfolio =
-  match List.assoc_opt stock.ticker portfolio with
+let sell ticker num portfolio =
+  match List.assoc_opt ticker portfolio with
   | Some bought_stock ->
       let curr_shares = !(bought_stock.shares) in
-      if curr_shares <= num then List.remove_assoc stock.ticker portfolio
+      if curr_shares <= num then List.remove_assoc ticker portfolio
       else (
         bought_stock.shares := curr_shares - num;
         portfolio)
