@@ -1,5 +1,10 @@
 open StockScraping
-(* open User *)
+
+(**function to make lines bold in the terminal and read lines*)
+let read_line_with_prompt prompt =
+  ANSITerminal.(print_string [ Bold ] prompt);
+  flush stdout;
+  input_line stdin
 
 (**Method to open and read file*)
 let file_reader filename =
@@ -64,11 +69,100 @@ let is_valid_date_format s =
 
   parse_date s 0
 
-(**function to make lines bold in the terminal*)
-let read_line_with_prompt prompt =
-  ANSITerminal.(print_string [ Bold ] prompt);
-  flush stdout;
-  input_line stdin
+(**code for the main menu*)
+let rec main_menu user username =
+  let get_info stock =
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Here is the info on %s stock !\n" stock);
+    print_string StockScraping.(to_string (get_ticker_info stock));
+    Printf.printf "Press any button to return to the main menu \n";
+    let user_input = read_line () in
+    match String.uppercase_ascii user_input with
+    | _ -> main_menu user username
+  in
+
+  let purchase stock =
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Please enter the number of shares you would like to buy!\n");
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | num ->
+        let created_stock =
+          User.make_stock stock
+            StockScraping.(get_price (get_ticker_info stock))
+        in
+        let new_port =
+          User.buy created_stock (int_of_string num) (User.get_portfolio user)
+        in
+        ANSITerminal.erase Screen;
+        ANSITerminal.(
+          printf [ Bold; Foreground Cyan ]
+            "Purchase confirmed, here is your current portfolio !\n");
+        User.print_portfolio new_port
+    (* Printf.printf "Press any button to return to the main menu \n"; let
+       user_input = read_line () in match String.uppercase_ascii user_input with
+       | _ -> failwith "todo" *)
+  in
+
+  let purchase_confirmation stock =
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Here is the info on %s stock !\n" stock);
+    print_string StockScraping.(to_string (get_ticker_info stock));
+    Printf.printf
+      "Press C to confirm your purchase or any other button to return to the \
+       main menu /n";
+    let user_input = read_line () in
+    match String.uppercase_ascii user_input with
+    | "C" -> purchase stock
+    | _ -> main_menu user username
+  in
+
+  let lookup () =
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Please enter the ticker of the stock you would like to lookup!\n");
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | x -> get_info x
+  in
+  let buy_screen () =
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Please enter the ticker of the stock you would like to buy");
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | x -> purchase_confirmation x
+  in
+
+  ANSITerminal.erase Screen;
+  Printf.printf "%s\n" (String.make 75 '-');
+  ANSITerminal.(
+    printf [ Bold; Foreground Cyan ] "Welcome to PSI Capital, %s!\n" username);
+  Printf.printf "Lets start by building you a portfolio!\n";
+  Printf.printf "If you would like to lookup a stock press 'L'\n";
+  Printf.printf "If you would like to buy a stock press 'B'\n";
+  Printf.printf "If you would like to sell a stock press 'S'\n";
+  Printf.printf "If you would like to view your portfolio press 'P'\n";
+  Printf.printf "If you would like to lookup a stock press 'L'\n";
+  Printf.printf "If you would like to lookup a stock press 'L'\n";
+  Printf.printf "%s\n" (String.make 75 '-');
+
+  let user_input = read_line_with_prompt "> " in
+  match String.uppercase_ascii user_input with
+  | "L" ->
+      Printf.printf "You selected to look up the price of a stock.\n";
+      lookup ()
+  | "B" ->
+      Printf.printf "You selected to buy a stock.\n";
+      buy_screen ()
+  (* Add stock lookup logic here *)
+  | _ ->
+      Printf.printf "Invalid option. Please try again.\n";
+      main_menu user "hello"
 
 (**function which presents the login screen allowing a user to login to their
    account*)
@@ -81,11 +175,12 @@ let login_screen () =
 
   let username = read_line_with_prompt "Enter username: " in
   Printf.printf "Welcome, %s!\n\n" username;
-
   let password = read_line_with_prompt "Enter password: " in
+  let user = User.make_user username password in
   Printf.printf "Login successful!\n";
   Printf.printf "%s\n" (String.make 75 '-');
-  print_endline password
+  print_endline password;
+  main_menu user username
 
 (**Function where the user decides if they are a returning user, or if they
    would like to create a new account*)
