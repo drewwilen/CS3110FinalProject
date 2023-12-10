@@ -59,6 +59,28 @@ let optioncontract4 =
     steps = 10;
   }
 
+let optioncontract5 = 
+  {
+    underlying_price = 85.0;
+    strike_price = 84.0;
+    time_to_expiry = 0.;
+    volatility = 0.18;
+    interest_rate = 0.05;
+    option_type = Put;
+    steps = 10;
+  }
+
+  let optioncontract6 = 
+    {
+      underlying_price = 85.0;
+      strike_price = 85.0;
+      time_to_expiry = 0.;
+      volatility = 0.18;
+      interest_rate = 0.05;
+      option_type = Call;
+      steps = 10;
+    }
+
 let options_suite =
   [
     ( "" >:: fun _ ->
@@ -128,6 +150,19 @@ let options_suite =
       assert_equal 0.24 (round_to_decimals (pdf 1.0) 2) );
     ( "pdf test (x = -1)" >:: fun _ ->
       assert_equal 0.24 (round_to_decimals (pdf (-1.0)) 2) );
+    ("execute contract test 1" >:: fun _ -> assert_equal false (execute_contract optioncontract1));
+    ("execute contract test 2" >:: fun _ -> assert_equal false (execute_contract optioncontract2));
+    ("execute contract test 3" >:: fun _ -> assert_equal true (execute_contract optioncontract5));
+    ("execute contract test 4" >:: fun _ -> assert_equal true (execute_contract optioncontract6));
+    ("Create contract test" >:: fun _ -> assert_equal   {
+      underlying_price = 85.0;
+      strike_price = 94.0;
+      time_to_expiry = 1.0;
+      volatility = 0.18;
+      interest_rate = 0.05;
+      option_type = Put;
+      steps = 10;
+    } (create_contract 85.0 94.0 1.0 0.18 0.05 Put 10))
   ]
 
 let test_port_tolist expected port =
