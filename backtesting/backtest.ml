@@ -621,3 +621,11 @@ let rec change_of_portfolio_adjust (portfolio_shares : (string * int) list) days
   | (tick, shares) :: t ->
       (float_of_int shares *. change_of_stock tick days)
       +. change_of_portfolio_adjust t days
+
+let () =
+  print_endline
+    (string_of_float
+       (change_of_porfolio_adjust
+          [ ("AAPL", 10); ("AMZN", 10); ("FB", 10); ("NVDA", 10) ]
+          1259))
+
