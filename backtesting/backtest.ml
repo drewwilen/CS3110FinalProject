@@ -1,11 +1,7 @@
-(* Function to read a CSV file *)
 let read_csv_file (file_path : string) : string list list =
-  (* Open the CSV file *)
   let channel = open_in file_path in
   let csv_channel = Csv.of_channel ~separator:',' channel in
-  (* Read all rows from the CSV file *)
   let rows = Csv.input_all csv_channel in
-  (* Return the rows read from the CSV file *)
   rows
 
 let s_and_p =
@@ -548,25 +544,15 @@ let rec print_data lst =
           print_data t
       | _ -> failwith "invalid\n\n form")
 
-(* Makes sure a list of stocks are listed on the S&P 500 *)
 let valid_stocks (stocks : string list) : string list =
   List.filter (fun x -> List.mem x s_and_p) stocks
 
-(* Helper function that takes the first n elements of a list*)
 let rec first_n_elements lst n =
   match (lst, n) with
   | [], _ -> []
   | _, 0 -> []
   | h :: t, n -> h :: first_n_elements t (n - 1)
 
-(* Function that takes in a ticker, an amount of days, and an interval. This
-   function will create a list of the closing prices of the number of days after
-   2013-02-08. Note that the number of days and intervals cannot exceed 1259.
-   The interval will divide up this number of days and will also be the number
-   of elements in the output list.
-
-   Example: backtest_stock AAPL 100 10 will look at 100 days of apple and record
-   the closing price on every 10th day. Thus the output will have 10 elements*)
 let historical_stock_data ticker days interval =
   let safe_ticker =
     match valid_stocks [ ticker ] with
@@ -577,9 +563,6 @@ let historical_stock_data ticker days interval =
   let first_elements = first_n_elements data_list days in
   List.filteri (fun i _ -> (i + 1) mod interval = 0) first_elements
 
-(* Function that takes in a list of tickers, an amount of days, and an interval.
-   This function will ouput a list of what historical_stock_data ouputs. See
-   that specification as the same rules apply*)
 let rec historial_n_stocks_data tickers days interval =
   match tickers with
   | [] -> []
@@ -587,8 +570,6 @@ let rec historial_n_stocks_data tickers days interval =
       historical_stock_data h days interval
       :: historial_n_stocks_data t days interval
 
-(* Function that calculates the change in close price between any interval of
-   days *)
 let change_of_stock ticker days =
   match historical_stock_data ticker days (days / 2) with
   | [] -> 0.0
@@ -605,15 +586,11 @@ let change_of_stock ticker days =
       in
       float_of_string close2 -. float_of_string close1
 
-(* Function that calculates the change in close price between any interval of
-   days for a portfolio of stocks *)
 let rec change_of_portfolio portfolio days =
   match portfolio with
   | [] -> 0.0
   | h :: t -> change_of_stock h days +. change_of_portfolio t days
 
-(* Function that calculates the change in close price between any interval of
-   days for a portfolio of stocks, and adjusts for the number of shares owned*)
 let rec change_of_portfolio_adjust (portfolio_shares : (string * int) list) days
     =
   match portfolio_shares with
@@ -621,10 +598,3 @@ let rec change_of_portfolio_adjust (portfolio_shares : (string * int) list) days
   | (tick, shares) :: t ->
       (float_of_int shares *. change_of_stock tick days)
       +. change_of_portfolio_adjust t days
-
-let () =
-  print_endline
-    (string_of_float
-       (change_of_portfolio_adjust
-          [ ("AAPL", 10); ("AMZN", 10); ("FB", 10); ("NVDA", 10) ]
-          1259))
