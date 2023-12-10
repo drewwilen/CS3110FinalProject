@@ -83,12 +83,12 @@ let rec main_menu user username password =
       Printf.printf "Your options Rho value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
     let gamme option =
       ANSITerminal.erase Screen;
@@ -99,12 +99,12 @@ let rec main_menu user username password =
       Printf.printf "Your options Gamma value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
 
     let delta option =
@@ -116,12 +116,12 @@ let rec main_menu user username password =
       Printf.printf "Your options Delta value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
     let vega option =
       ANSITerminal.erase Screen;
@@ -132,12 +132,12 @@ let rec main_menu user username password =
       Printf.printf "Your options Vega value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
     let theta option =
       ANSITerminal.erase Screen;
@@ -148,12 +148,12 @@ let rec main_menu user username password =
       Printf.printf "Your options Theta value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
     let binomial_pricing option =
       ANSITerminal.erase Screen;
@@ -166,12 +166,12 @@ let rec main_menu user username password =
       Printf.printf "Your options price value is %s\n" (string_of_float value);
       ANSITerminal.(
         printf [ Bold; Foreground Cyan ]
-          "If you would like to return to the options menu press 'O' if you \
-           would like to return to the main menu press any button\n");
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
       let menu = read_line_with_prompt "> " in
       match menu with
-      | "O" -> options_capabilities option
-      | _ -> main_menu user username password
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
     in
     let blac_schoels option =
       ANSITerminal.erase Screen;
