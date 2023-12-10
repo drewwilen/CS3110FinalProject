@@ -626,5 +626,5 @@ let () =
   print_endline
     (string_of_float
        (change_of_porfolio_adjust
-          [ ("AAPL", 10); ("AMZN", 3); ("NVDA", 6) ]
+          [ ("AAPL", 10); ("AMZN", 10); ("FB", 10); ("NVDA", 10) ]
           1259))
