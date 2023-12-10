@@ -2,9 +2,8 @@ In order to run you will need to install a few packages to do so you can run the
 
 opam install ANSITerminal
 
-After you have installed ANSITerminal you can run the program in the terminal by calling make run
 
-To run scraping you must run the following commands: 
+To access scraping capabilities you must run the following commands: 
 
 opam install Unit (What is this? Doesnt come up in opam)
 opam install tls-lwt
@@ -12,6 +11,7 @@ opam install Yojson
 opam install cohttp
 opam install cohttp-lwt-unix  
 opam install csv
+brew install cloc (if you want to run the make cloc command for lines of code information)
 
 
  
