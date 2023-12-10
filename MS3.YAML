@@ -1,0 +1,27 @@
+---
+group:
+  - name: David Goldfarb
+    netid: dg646
+  - name: Max Gordon
+    netid: mrg263
+  - name: Andrew Lowitt
+    netid: ael254
+  - name: Drew Wilenzick
+    netid: ddw77
+pm:
+  name: Raymond Lin
+  netid: rl569
+publish: true
+title: "Psi Capital"
+git-repo: "https://github.coecis.cornell.edu/ddw77/3110-final-project"
+demo-video-url: ""
+desc: >
+Our stock brokerage platform offers users the ability to buy and sell 
+stocks of their choosing, including real-time acquisition of stock prices to 
+allow users to build up-to-date portfolios. Additionally, our platform 
+allows users to backtest their portfolio based on historical data for which they
+can customize the length of the period they backtest for. Additionally, our platform
+allows users to create custom options contracts and price contracts using various algorithms
+including Black-Scholes and binomial pricing, as well as allowing for users to 
+calculate prices of option Greeks, including theta and delta.
+
