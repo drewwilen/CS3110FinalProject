@@ -230,7 +230,9 @@ let rec main_menu user username password =
         "Next enter your desired time to expiration in days price\n");
     let time = read_line_with_prompt "> " in
     ANSITerminal.(
-      printf [ Bold; Foreground Cyan ] "Finally enter if it is a call or put\n");
+      printf [ Bold; Foreground Cyan ]
+        "Finally enter if it is a call or put using the key words 'call' and \
+         'put'\n");
     let type_o = read_line_with_prompt "> " in
     match type_o with
     | "put" | "Put" -> (
@@ -264,8 +266,8 @@ let rec main_menu user username password =
         Options.print_option_contract option;
         ANSITerminal.(
           printf [ Bold; Foreground Cyan ]
-            "Now that you have an option press any x to move on to the option \
-             menu \n");
+            "Now that you have an option press any key to move on to the \
+             option menu \n");
         let menu = read_line_with_prompt "> " in
         match menu with
         | _ -> options_capabilities option)
@@ -313,7 +315,7 @@ let rec main_menu user username password =
     | _ -> main_menu user username password
   in
 
-  let purchase stock =
+  let rec purchase stock =
     ANSITerminal.erase Screen;
     ANSITerminal.(
       printf [ Bold; Foreground Cyan ]
@@ -321,30 +323,33 @@ let rec main_menu user username password =
     let user_input = read_line_with_prompt "> " in
     match String.uppercase_ascii user_input with
     | num -> (
-        let created_stock =
-          User.make_stock stock
-            StockScraping.(get_price (get_ticker_info stock))
-        in
-        let new_port =
-          User.buy created_stock (int_of_string num) (User.get_portfolio user)
-        in
-        ANSITerminal.erase Screen;
-        ANSITerminal.(
-          printf [ Bold; Foreground Cyan ]
-            "Purchase confirmed, here is your current portfolio !\n");
-        User.print_portfolio new_port;
-        ANSITerminal.(
-          printf [ Bold; Foreground Cyan ]
-            "Press any button to return to the main menu \n");
-        let user_input = read_line () in
-        let new_user =
-          User.make_user_from_portfolio username password new_port
-        in
-        match String.uppercase_ascii user_input with
-        | _ -> main_menu new_user username password)
+        try
+          let created_stock =
+            User.make_stock stock
+              StockScraping.(get_price (get_ticker_info stock))
+          in
+          let new_port =
+            User.buy created_stock (int_of_string num) (User.get_portfolio user)
+          in
+          ANSITerminal.erase Screen;
+          ANSITerminal.(
+            printf [ Bold; Foreground Cyan ]
+              "Purchase confirmed, here is your current portfolio !\n");
+          User.print_portfolio new_port;
+          ANSITerminal.(
+            printf [ Bold; Foreground Cyan ]
+              "Press any button to return to the main menu \n");
+          let user_input = read_line () in
+          let new_user =
+            User.make_user_from_portfolio username password new_port
+          in
+          match String.uppercase_ascii user_input with
+          | _ -> main_menu new_user username password
+        with _ -> purchase stock)
   in
 
   let purchase_confirmation stock =
+    ANSITerminal.erase Screen;
     ANSITerminal.(
       printf [ Bold; Foreground Cyan ] "Here is the info on %s stock !\n" stock);
     print_string StockScraping.(to_string (get_ticker_info stock));
@@ -376,7 +381,7 @@ let rec main_menu user username password =
     | x -> purchase_confirmation x
   in
 
-  let sell stock =
+  let rec sell stock =
     ANSITerminal.erase Screen;
     ANSITerminal.(
       printf [ Bold; Foreground Cyan ]
@@ -384,26 +389,29 @@ let rec main_menu user username password =
     let user_input = read_line_with_prompt "> " in
     match String.uppercase_ascii user_input with
     | num -> (
-        let new_port =
-          User.sell stock (int_of_string num) (User.get_portfolio user)
-        in
-        ANSITerminal.erase Screen;
-        ANSITerminal.(
-          printf [ Bold; Foreground Cyan ]
-            "Purchase confirmed, here is your current portfolio !\n");
-        User.print_portfolio new_port;
-        ANSITerminal.(
-          printf [ Bold; Foreground Cyan ]
-            "Press any button to return to the main menu \n");
-        let user_input = read_line () in
-        let new_user =
-          User.make_user_from_portfolio username password new_port
-        in
-        match String.uppercase_ascii user_input with
-        | _ -> main_menu new_user username password)
+        try
+          let new_port =
+            User.sell stock (int_of_string num) (User.get_portfolio user)
+          in
+          ANSITerminal.erase Screen;
+          ANSITerminal.(
+            printf [ Bold; Foreground Cyan ]
+              "Purchase confirmed, here is your current portfolio !\n");
+          User.print_portfolio new_port;
+          ANSITerminal.(
+            printf [ Bold; Foreground Cyan ]
+              "Press any button to return to the main menu \n");
+          let user_input = read_line () in
+          let new_user =
+            User.make_user_from_portfolio username password new_port
+          in
+          match String.uppercase_ascii user_input with
+          | _ -> main_menu new_user username password
+        with _ -> sell stock)
   in
 
   let sell_confirmation stock =
+    ANSITerminal.erase Screen;
     ANSITerminal.(
       printf [ Bold; Foreground Cyan ] "Here is the info on %s stock !\n" stock);
     print_string StockScraping.(to_string (get_ticker_info stock));
@@ -455,16 +463,18 @@ let rec main_menu user username password =
     | _ -> main_menu user username password
   in
 
-  let backtest_screen () =
+  let rec backtest_screen () =
     ANSITerminal.erase Screen;
     ANSITerminal.(
       printf [ Bold; Foreground Cyan ]
         "Welcome to the Vestra Platform PSI capitals proprietary backtesting \
-         platform to backtest your portfolio please enter an amount of days \
-         between 2 and 1258 to backtest your stocks on ");
+         platform to\n\
+        \ backtest your portfolio please enter an amount of days between 2 and \
+         1258\n\
+        \ to backtest your stocks on ");
     let user_input = read_line_with_prompt "> " in
     match String.uppercase_ascii user_input with
-    | x -> backtest_run (int_of_string x)
+    | x -> ( try backtest_run (int_of_string x) with _ -> backtest_screen ())
   in
 
   ANSITerminal.erase Screen;
@@ -528,7 +538,8 @@ let login_screen () =
 let rec login_or_new () =
   ANSITerminal.erase Screen;
   ANSITerminal.print_string [ ANSITerminal.blue ]
-    "Welcome to PSI Capital! Please enter login to access your login information\n";
+    "Welcome to PSI Capital! Please type 'login' and hit enter to access your \
+     login information\n";
   let response = read_line () in
   match response with
   | "login" | "Login" -> login_screen ()
@@ -592,8 +603,8 @@ let rec terms_and_cond () =
     "Enter Y if you agree, N if you do not";
   print_string "> ";
   match read_line () with
-  | "Y" -> age ()
-  | "N" ->
+  | "Y" | "y" -> age ()
+  | "N" | "n" ->
       ANSITerminal.print_string [ ANSITerminal.red ]
         "Unfortunately, you must agree to the terms to use the platform"
   | _ ->

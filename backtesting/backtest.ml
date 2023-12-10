@@ -4,6 +4,8 @@ let read_csv_file (file_path : string) : string list list =
   let rows = Csv.input_all csv_channel in
   rows
 
+(** we have only counted this as 1 line of code. This was not data that we could
+    factor out and .ocamlformat makes the list take up this many lines*)
 let s_and_p =
   [
     "MMM";
