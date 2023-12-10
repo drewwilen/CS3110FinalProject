@@ -12,9 +12,9 @@ type t
 (** t is the type for stock portfolios. *)
 
 type user
-
 (** A user is a type that has a username, password, and portfolio associated
     with it *)
+
 type users
 (** [users] keeps track of multiple users, including passwords, usernames, and
     portfolio *)
@@ -24,21 +24,21 @@ val make_user : string -> string -> user
     password [password], the empty portfolio *)
 
 val empty_users : users
-(* [empty_users] is an empty set of users that can then be added to *)
+(** [empty_users] is an empty set of users that can then be added to *)
 
 val add_user : user -> users -> users
-(* [add_users u users] adds u to the group of users that have portfolios*)
+(** [add_users u users] adds u to the group of users that have portfolios*)
 
 val login_attempt : string -> string -> users -> t option
-(* [login_attempt u p user] returns None if the password and username are not
-   found in the users, and returns some portfolio if it is found in the users *)
+(** [login_attempt u p user] returns None if the password and username are not
+    found in the users, and returns some portfolio if it is found in the users *)
 
 val make_user_from_portfolio : string -> string -> t -> user
-(* [make_user username password portfolio] Creates a user with username
-   [username], password [password], and the portfolio [portfolio] *)
+(** [make_user username password portfolio] Creates a user with username
+    [username], password [password], and the portfolio [portfolio] *)
 
 val get_portfolio : user -> t
-(* [get_portfolio a] returns the portfolio of a given user *)
+(** [get_portfolio a] returns the portfolio of a given user *)
 
 val empty : t
 (** [empty] Initializes an empty portfolio*)
@@ -58,8 +58,8 @@ val stocks : t -> string
     string of the stocks in that portfolio*)
 
 val print_portfolio : t -> unit
-(* prints out the portfolio, including all the information of stocks and prices.
-   Tested the main program *)
+(** prints out the portfolio, including all the information of stocks and
+    prices. Tested the main program *)
 
 val lookup_gain : string -> t -> float option
 (** [lookup_gain ticker portfolio] Takes in a ticker and a portfolio. Outputs
@@ -70,7 +70,7 @@ val value : t -> float
     contained*)
 
 val make_stock : string -> float -> stock
-(* Initialize a stock into acceptable format for buying and selling *)
+(** Initialize a stock into acceptable format for buying and selling *)
 
 val buy : stock -> int -> t -> t
 (** Purchase a amount of stocks and add that to an portfolio. The equivalent of
