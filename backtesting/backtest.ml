@@ -625,7 +625,6 @@ let rec change_of_portfolio_adjust (portfolio_shares : (string * int) list) days
 let () =
   print_endline
     (string_of_float
-       (change_of_porfolio_adjust
+       (change_of_portfolio_adjust
           [ ("AAPL", 10); ("AMZN", 10); ("FB", 10); ("NVDA", 10) ]
           1259))
-
