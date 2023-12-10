@@ -16,10 +16,34 @@ type value = {
 
 type login = string * string
 type t = (key * value) list
-type users = (login * t) list
+type user = login * t
+type users = user list
 
 let empty = []
 let is_empty t = List.length t = 0
+
+let make_user (username : string) (password : string) =
+  ((username, password), empty)
+
+let make_user_from_portfolio (username : string) (password : string) portfolio =
+  ((username, password), portfolio)
+
+let empty_users = []
+
+let rec add_user u users =
+  match users with
+  | [] -> [ u ]
+  | t :: [] -> t :: [ u ]
+  | h :: t -> h :: add_user u t
+
+let rec login_attempt username password users =
+  match users with
+  | [] -> None
+  | ((user, pass), portfolio) :: t ->
+      if user = username && pass = password then Some portfolio
+      else login_attempt username password t
+
+let get_portfolio (user : user) = snd user
 
 let stock_to_string (s : value) (i : int) =
   "\nPortfolio Stock # " ^ string_of_int i ^ "\nTicker " ^ s.stock.ticker ^ "s"
@@ -44,11 +68,15 @@ let rec to_string_stock_list lst accum =
 let print_portfolio p = print_string (to_string_stock_list p 1)
 let stocks t = to_string_stock_list t 1
 
-(* let portfolio = failwith "unimplemented" *)
-let lookup_gain (ticker : string) (portfolio : t) =
-  match List.assoc_opt ticker portfolio with
-  | Some stock -> Some !(stock.unrealized_gain)
-  | None -> None
+let rec num_stocks p =
+  match p with
+  | [] -> 0
+  | _ :: t -> 1 + num_stocks t
+
+let rec num_shares p =
+  match p with
+  | [] -> 0
+  | (_, v) :: t -> !(v.shares) + num_shares t
 
 let rec value portfolio =
   match portfolio with
@@ -70,26 +98,33 @@ let buy stock num portfolio =
     } )
   :: portfolio
 
-let sell stock num portfolio =
-  match List.assoc_opt stock.ticker portfolio with
+let sell ticker num portfolio =
+  match List.assoc_opt ticker portfolio with
   | Some bought_stock ->
       let curr_shares = !(bought_stock.shares) in
-      if curr_shares <= num then List.remove_assoc stock.ticker portfolio
+      if curr_shares <= num then List.remove_assoc ticker portfolio
       else (
         bought_stock.shares := curr_shares - num;
         portfolio)
   | None -> portfolio
 
-let update updated_stock portfolio =
-  match List.assoc_opt updated_stock.ticker portfolio with
-  | Some { stock; bought_price; unrealized_gain; percentage_gain; _ } ->
-      (match stock with
-      | { price; _ } ->
-          unrealized_gain := !(updated_stock.price) -. bought_price;
-          percentage_gain := !(updated_stock.price) /. bought_price;
-          price := !(updated_stock.price));
-      portfolio
-  | None -> portfolio
+let update_stock stock price =
+  stock.price := price;
+  price
+
+let rec update portfolio =
+  match portfolio with
+  | [] -> []
+  | (k, v) :: t ->
+      v.unrealized_gain := !(v.stock.price) -. v.bought_price;
+      v.percentage_gain := !(v.stock.price) /. v.bought_price;
+      (k, v) :: update t
+
+let lookup_gain (ticker : string) (portfolio : t) =
+  let updated_portfolio = update portfolio in
+  match List.assoc_opt ticker updated_portfolio with
+  | Some stock -> Some !(stock.unrealized_gain)
+  | None -> None
 
 let rec to_backtest portfolio =
   match portfolio with

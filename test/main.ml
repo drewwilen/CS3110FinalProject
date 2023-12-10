@@ -129,6 +129,7 @@ let options_suite =
       assert_equal 0.24 (round_to_decimals (pdf (-1.0)) 2) );
   ]
 
+
 let user_test =
   [
     ("Empty Test" >:: fun _ -> assert_bool "failing test" (User.is_empty empty));
@@ -143,6 +144,7 @@ let user_test =
     ( "Empty Test - bought and sold some" >:: fun _ ->
       assert_bool "failing test"
         (not (User.is_empty (sell "TSLA" 43 (buy tsla 100 empty)))) );
+
     ( "stocks of empty portfolio is empty string" >:: fun _ ->
       assert_equal "" (User.stocks empty) );
     ( "Test looking up in portfolio" >:: fun _ ->
@@ -450,4 +452,4 @@ let backtesting_suite =
   ]
 
 let tests = "test suite" >::: user_test @ backtesting_suite @ options_suite
-let _ = run_test_tt_main tests
+let _ = run_test_tt_main tests\
