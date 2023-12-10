@@ -614,17 +614,10 @@ let rec change_of_portfolio portfolio days =
 
 (* Function that calculates the change in close price between any interval of
    days for a portfolio of stocks, and adjusts for the number of shares owned*)
-let rec change_of_porfolio_adjust (portfolio_shares : (string * int) list) days
+let rec change_of_portfolio_adjust (portfolio_shares : (string * int) list) days
     =
   match portfolio_shares with
   | [] -> 0.0
   | (tick, shares) :: t ->
       (float_of_int shares *. change_of_stock tick days)
-      +. change_of_porfolio_adjust t days
-
-let () =
-  print_endline
-    (string_of_float
-       (change_of_porfolio_adjust
-          [ ("AAPL", 10); ("AMZN", 3); ("NVDA", 6) ]
-          1259))
+      +. change_of_portfolio_adjust t days

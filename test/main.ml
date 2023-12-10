@@ -49,7 +49,10 @@ let suite =
          ( "Value of portfolio that went to zero" >:: fun _ ->
            assert_equal 0.0 User.(value (update tsla_zero (buy tsla 100 empty)))
          );
-         (* Test for non-empty portfolio *)
+         ( "Value of portfolio that went to zero" >:: fun _ ->
+           assert_equal [ "AAPL" ] (Backtest.valid_stocks [ "AAPL"; "poop" ])
+         )
+         (* Test for non-empty portfolio *);
        ]
 
 let _ = run_test_tt_main suite
