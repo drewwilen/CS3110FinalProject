@@ -25,6 +25,9 @@ let is_empty t = List.length t = 0
 let make_user (username : string) (password : string) =
   ((username, password), empty)
 
+let make_user_from_portfolio (username : string) (password : string) portfolio =
+  ((username, password), portfolio)
+
 let get_portfolio (user : user) = snd user
 
 let stock_to_string (s : value) (i : int) =
@@ -50,11 +53,15 @@ let rec to_string_stock_list lst accum =
 let print_portfolio p = print_string (to_string_stock_list p 1)
 let stocks t = to_string_stock_list t 1
 
-(* let portfolio = failwith "unimplemented" *)
-let lookup_gain (ticker : string) (portfolio : t) =
-  match List.assoc_opt ticker portfolio with
-  | Some stock -> Some !(stock.unrealized_gain)
-  | None -> None
+let rec num_stocks p =
+  match p with
+  | [] -> 0
+  | _ :: t -> 1 + num_stocks t
+
+let rec num_shares p =
+  match p with
+  | [] -> 0
+  | (_, v) :: t -> !(v.shares) + num_shares t
 
 let rec value portfolio =
   match portfolio with
@@ -86,16 +93,23 @@ let sell stock num portfolio =
         portfolio)
   | None -> portfolio
 
-let update updated_stock portfolio =
-  match List.assoc_opt updated_stock.ticker portfolio with
-  | Some { stock; bought_price; unrealized_gain; percentage_gain; _ } ->
-      (match stock with
-      | { price; _ } ->
-          unrealized_gain := !(updated_stock.price) -. bought_price;
-          percentage_gain := !(updated_stock.price) /. bought_price;
-          price := !(updated_stock.price));
-      portfolio
-  | None -> portfolio
+let update_stock stock price =
+  stock.price := price;
+  price
+
+let rec update portfolio =
+  match portfolio with
+  | [] -> []
+  | (k, v) :: t ->
+      v.unrealized_gain := !(v.stock.price) -. v.bought_price;
+      v.percentage_gain := !(v.stock.price) /. v.bought_price;
+      (k, v) :: update t
+
+let lookup_gain (ticker : string) (portfolio : t) =
+  let updated_portfolio = update portfolio in
+  match List.assoc_opt ticker updated_portfolio with
+  | Some stock -> Some !(stock.unrealized_gain)
+  | None -> None
 
 let rec to_backtest portfolio =
   match portfolio with

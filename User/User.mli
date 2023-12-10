@@ -12,6 +12,10 @@ val make_user : string -> string -> user
 (* [make_user username password] Creates a user with username [username],
    password [password], the empty portfolio *)
 
+val make_user_from_portfolio : string -> string -> t -> user
+(* [make_user username password portfolio] Creates a user with username
+   [username], password [password], and the portfolio [portfolio] *)
+
 val get_portfolio : user -> t
 (* [get_portfolio a] returns the portfolio of a given user *)
 
@@ -20,6 +24,12 @@ val empty : t
 
 val is_empty : t -> bool
 (** Returns whether or not the portfolio is empty*)
+
+val num_stocks : t -> int
+(** Returns the number of unique stocks in the portfolio*)
+
+val num_shares : t -> int
+(** Returns the number of shares for every stock in the portfolio*)
 
 val stocks : t -> string
 (** The equivalent of a to_string function. Takes in a portfolio and returns a
@@ -45,8 +55,12 @@ val buy : stock -> int -> t -> t
 val sell : stock -> int -> t -> t
 (** Sell an amount of stocks in the existing portfolio. The equivalent of remove*)
 
-val update : stock -> t -> t
-(** Updates the information about a stock to update a certain portfolio*)
+val update_stock : stock -> float -> float
+(** Updates the price of a stock. Portfolios that contain it will be updated
+    too. Returns the updated price *)
+
+val update : t -> t
+(** Updates portfolio statistics to match potentially updated stocks*)
 
 val to_backtest : t -> (string * int) list
 (** From a portfolio, returns an association list of string * int of the tickers
