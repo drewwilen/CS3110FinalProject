@@ -71,6 +71,234 @@ let is_valid_date_format s =
 
 (**code for the main menu*)
 let rec main_menu user username password =
+  ANSITerminal.erase Screen;
+
+  let rec options_capabilities option =
+    let rho option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.rho option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ] "Below is your options Rhos value\n");
+      Printf.printf "Your options Rho value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+    let gamme option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.gamma option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ] "Below is your options Gamma value\n");
+      Printf.printf "Your options Gamma value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+
+    let delta option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.delta option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ] "Below is your options Delta value\n");
+      Printf.printf "Your options Delta value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+    let vega option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.vega option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ] "Below is your options Vega value\n");
+      Printf.printf "Your options Vega value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+    let theta option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.theta option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ] "Below is your options Theta value\n");
+      Printf.printf "Your options Theta value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+    let binomial_pricing option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.binomial_price option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "We have ran the Binomial Price model on you option, below is the \
+           result\n");
+      Printf.printf "Your options price value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+    let blac_schoels option =
+      ANSITerminal.erase Screen;
+
+      let value = Options.black_scholes_price option in
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "We have ran the Black Schoels model on you option, below is the \
+           result\n");
+      Printf.printf "Your options price value is %s\n" (string_of_float value);
+      ANSITerminal.(
+        printf [ Bold; Foreground Cyan ]
+          "If you would like to return to the Main menu press 'M' if you would \
+           like to return to the options main menu press any button\n");
+      let menu = read_line_with_prompt "> " in
+      match menu with
+      | "M" -> main_menu user username password
+      | _ -> options_capabilities option
+    in
+
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Welcome to the PSI Capital options menu\n");
+    Printf.printf "To run the Black Schoels model on your option press 'BS'\n";
+    Printf.printf
+      "To run the Binomial pricing model on your option press 'Bin'\n";
+    Printf.printf "To get your options Rho value press 'R'\n";
+    Printf.printf "To get your options Gamma value press 'G'\n";
+    Printf.printf "To get your options Theta value press 'T'\n";
+    Printf.printf "To get your options Delta value press 'D'\n";
+    Printf.printf "To get your options Vega value press 'V'\n";
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | "BS" -> blac_schoels option
+    | "BIN" -> binomial_pricing option
+    | "R" -> rho option
+    | "G" -> gamme option
+    | "T" -> theta option
+    | "D" -> delta option
+    | "V" -> vega option
+    | _ -> main_menu user username password
+  in
+  let create_contract () =
+    ANSITerminal.erase Screen;
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "To create an options contract please first enter the stock you would \
+         like it to be based on\n");
+    let underlying = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Next enter your desired strike price\n");
+    let strike = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Next enter your desired time to expiration in days price\n");
+    let time = read_line_with_prompt "> " in
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ] "Finally enter if it is a call or put\n");
+    let type_o = read_line_with_prompt "> " in
+    match type_o with
+    | "put" | "Put" -> (
+        let option =
+          Options.create_contract
+            (StockScraping.get_price
+               (StockScraping.get_ticker_info
+                  (String.uppercase_ascii underlying)))
+            (float_of_string strike) (float_of_string time) 0.5 0.5 Put 5
+        in
+        ANSITerminal.erase Screen;
+
+        Options.print_option_contract option;
+        ANSITerminal.(
+          printf [ Bold; Foreground Cyan ]
+            "Now that you have an option press any button to move on to the \
+             option menu \n");
+        let menu = read_line_with_prompt "> " in
+        match menu with
+        | _ -> options_capabilities option)
+    | "Call" | "call" -> (
+        let option =
+          Options.create_contract
+            (StockScraping.get_price
+               (StockScraping.get_ticker_info
+                  (String.uppercase_ascii underlying)))
+            (float_of_string strike) (float_of_string time) 0.5 0.5 Call 5
+        in
+        ANSITerminal.erase Screen;
+
+        Options.print_option_contract option;
+        ANSITerminal.(
+          printf [ Bold; Foreground Cyan ]
+            "Now that you have an option press any x to move on to the option \
+             menu \n");
+        let menu = read_line_with_prompt "> " in
+        match menu with
+        | _ -> options_capabilities option)
+    | _ -> (
+        print_endline "invalid contract";
+        ANSITerminal.(
+          printf [ Bold; Foreground Cyan ]
+            "Press any button to return to the main menu\n");
+        let menu = read_line_with_prompt "> " in
+        match menu with
+        | _ -> main_menu user username password)
+  in
+
+  let options_functionality () =
+    ANSITerminal.erase Screen;
+
+    ANSITerminal.(
+      printf [ Bold; Foreground Cyan ]
+        "Welcome to the PSI Capital options chain\n");
+    Printf.printf "Lets start by creating an option! \n";
+    Printf.printf "To create an option press 'O'\n";
+    Printf.printf
+      "If you would like to return to the main menu press any other button\n";
+
+    Printf.printf "%s\n" (String.make 75 '-');
+    let user_input = read_line_with_prompt "> " in
+    match String.uppercase_ascii user_input with
+    | "O" ->
+        Printf.printf "You selected to look up the price of a stock.\n";
+        create_contract ()
+    | _ -> main_menu user username password
+  in
+
   let get_info stock =
     ANSITerminal.erase Screen;
 
@@ -269,6 +497,9 @@ let rec main_menu user username password =
   | "TEST" ->
       Printf.printf "You selected to backtest a stock.\n";
       backtest_screen ()
+  | "O" ->
+      Printf.printf "You selected to backtest a stock.\n";
+      options_functionality ()
   (* Add stock lookup logic here *)
   | _ ->
       Printf.printf "Invalid option. Please try again.\n";
@@ -301,10 +532,9 @@ let rec login_or_new () =
   let response = read_line () in
   match response with
   | "login" | "Login" -> login_screen ()
-  | "create" | "Create" -> failwith "create"
   | _ ->
       ANSITerminal.print_string [ ANSITerminal.red ]
-        "Please enter a valid command";
+        "Please enter 'login' to login ";
       login_or_new ()
 
 (**Helper method to get the currrent year (used to compute if the user is over
@@ -330,19 +560,23 @@ let check_age age =
 
 (**Age function that gets the users age and send that information to the
    check_age function *)
-let age () =
+let rec age () =
   ANSITerminal.erase Screen;
   ANSITerminal.print_string [ ANSITerminal.blue ]
     "Before you can start using our platform, we will need to verify some of \
      your information. Please enter your age in the format mm/dd/yyyy ";
   print_string "> ";
-  let age = read_line () in
-  let valid_age = is_valid_date_format age in
+  let age_form = read_line () in
+  let valid_age = is_valid_date_format age_form in
   match valid_age with
-  | true -> check_age age
-  | false ->
+  | true -> check_age age_form
+  | false -> (
       ANSITerminal.print_string [ ANSITerminal.blue ]
-        "This is invalid format please input the date in the format mm/dd/yyyy "
+        "This is invalid format please input the date in the format mm/dd/yyyy \
+         press any button to try again";
+      let response = read_line () in
+      match response with
+      | _ -> age ())
 
 (**Terms and condititons methos that opens a file, reads it and outputs it to
    the user using a created file reader, the user has a choice to agree or
@@ -394,12 +628,6 @@ let main () =
      your information. Please press enter to continue ";
   print_string "> ";
   match read_line () with
-  | _ -> (
-      terms_and_cond ();
-
-      ANSITerminal.print_string [ ANSITerminal.blue ]
-        "Enter a stock ticker to check ";
-      match read_line () with
-      | e -> print_string StockScraping.(to_string (get_ticker_info e)))
+  | _ -> terms_and_cond ()
 
 let () = main ()

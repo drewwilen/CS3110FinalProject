@@ -23,6 +23,17 @@ val print_time_to_expiry : option_contract -> unit
 val print_volatility : option_contract -> unit
 val print_interest_rate : option_contract -> unit
 val print_option_type : option_contract -> unit
+val print_option_contract : option_contract -> unit
+
+val create_contract :
+  float ->
+  float ->
+  float ->
+  float ->
+  float ->
+  option_type ->
+  int ->
+  option_contract
 
 (* Updates the options contract based on factors that change over time so its
    current value can be found *)
