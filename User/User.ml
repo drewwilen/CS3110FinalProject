@@ -14,7 +14,6 @@ type value = {
   dividend : float option;
 }
 
-
 type login = string * string
 type t = (key * value) list
 type users = (login * t) list
@@ -95,4 +94,4 @@ let update updated_stock portfolio =
 let rec to_backtest portfolio =
   match portfolio with
   | [] -> []
-  | (ticker, stock) :: t -> (ticker, stock.shares) :: to_backtest t
+  | (ticker, stock) :: t -> (ticker, !(stock.shares)) :: to_backtest t

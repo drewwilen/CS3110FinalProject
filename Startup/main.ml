@@ -1,5 +1,5 @@
 open StockScraping
-open User
+(* open User *)
 
 (**Method to open and read file*)
 let file_reader filename =
