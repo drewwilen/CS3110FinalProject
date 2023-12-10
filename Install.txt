@@ -5,7 +5,6 @@ opam install ANSITerminal
 
 To access scraping capabilities you must run the following commands: 
 
-opam install Unit (What is this? Doesnt come up in opam)
 opam install tls-lwt
 opam install Yojson
 opam install cohttp
