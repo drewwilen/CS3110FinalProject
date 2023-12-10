@@ -70,6 +70,7 @@ let print_option_type (contract : option_contract) =
   | Put -> print_endline "Put"
 
 let print_option_contract (contract : option_contract) =
+  print_endline "You have created an option contract, below its information";
   print_endline
     ("Underlying Price: " ^ string_of_float contract.underlying_price);
   print_endline ("Strike Price: " ^ string_of_float contract.strike_price);

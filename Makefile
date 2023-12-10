@@ -15,7 +15,7 @@ clean:
 build:
 	dune build
 
-poop:
+platform:
 	OCAMLRUNPARAM=b dune exec Startup/main.exe
 
 cloc:
