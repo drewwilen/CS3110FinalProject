@@ -2,6 +2,65 @@ open OUnit2
 open User
 open Options
 
+(** User testing OUnit vs Manual: Most functionality was tested by OUnit. Each
+    function is included in multiple test cases, and there are also several test
+    cases that combine functions (including buying, selling, updating, etc) that
+    check how the functions work with each other. Additionally, the
+    functionality from a user that was used in Startup (the actual platform) was
+    tested even more carefully as we manually tested when integrated with the
+    main platform. Developing Test Cases: A mix of black box and glass box
+    testing was implemented. I tried involving a few different stocks, and
+    portfolio that contained one stock, a few stocks, and some that bought and
+    sold stocks so it varied so I could make sure to catch any edge cases.
+    Additionally, I tested references to stocks very thoroughly to ensure those
+    worked properly. Backtesting testing: OUnit vs Manual: Most functionality
+    was tested by OUnit. Each function has around 2-3 test cases that explore
+    edge possibilities and ensure that the user will receive the expected
+    information. The functions that were used to print information, however,
+    were not tested using OUnit and were simply visually observed in the
+    terminal to ensure that the desired result was being produced. Developing
+    Test Cases: Most functions that were tested by OUnit were implemented using
+    glass box testing. Specifically, testing the csv reading functions required
+    me to pull out information from these files and compare it to the output of
+    these functions. Startup and Scraping Testing OUnit vs Manual: The startup
+    file is virtually impossible to test via OUnit due to the fact that the
+    files main functionality is running the whole program and displaying
+    information and data on the terminal. Although there was not much OUnit
+    testing, this portion of the code required heavy manual testing to ensure
+    that the program always ran correctly, outputted the correct data and
+    results, and never crashed unexpectedly.; Developing Test Cases: Our program
+    was created with a main menu, so the logic behind the manual test cases was
+    simple, yet rigorous. Every possible branch of the program that could be
+    reached from the main menu had to be tested with expected inputs and edge
+    cases. This testing style helped ensure that there were no holes in the
+    program where you could possibly break it. This required a mix of blackbox
+    and glassbox testing where glassbox testing was used to ensure that all
+    possible branches of the program were reached(by looking at the code), and
+    blackbox testing was used to motivate extraneous user inputs that could
+    possibly break the program. Options testing: OUnit vs Manual: Almost all
+    functionality was tested by OUnit. The option contract type and the
+    corresponding functions on the type lend themselves well to being tested by
+    OUnit as they take option contracts in and return a result based on
+    formulas. Only the print functions, for both the aspects of the contract and
+    the whole contract could not be tested by OUnit, and we instead visually
+    confirmed that the results that we got were the same as the expected
+    results. Developing Test Cases: For developing test cases we wanted to test
+    all the functions on different options contracts. This meant writing black
+    box tests mostly. For every function, we wanted to see that we would get the
+    desired result from it without thinking about what is happening within the
+    function. This made a lot of sense, because the only variability was whether
+    the function was a Call or a Put, which we designed our test cases around by
+    having different options contracts, some of which were calls and some puts.
+    Some of our other testing centered around creating and modifying contracts,
+    which was slightly different from the other functions, which all centered
+    around inputs being a contract and outputs being a float, but could still be
+    tested by black box testing. Overall, black box testing was a good strategy
+    for testing options.
+
+    General Conclusion: The culmination of testing each function/module
+    individually and then ensuring that the functionality of the final product
+    works proves that our code is correct. *)
+
 let tsla = make_stock "TSLA" 100.0
 let aapl = make_stock "AAPL" 67.0
 let gme = make_stock "GME" 20.0
