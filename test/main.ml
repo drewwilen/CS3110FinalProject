@@ -130,6 +130,10 @@ let options_suite =
       assert_equal 0.24 (round_to_decimals (pdf (-1.0)) 2) );
   ]
 
+let test_port_tolist expected port =
+  assert_equal ~msg:"Test port to_string failed" expected
+    (User.to_backtest port)
+
 let user_test =
   [
     ("Empty Test" >:: fun _ -> assert_bool "failing test" (User.is_empty empty));
@@ -293,6 +297,14 @@ let user_test =
         (match User.(login_attempt "drew" "w" log_upt) with
         | Some u -> not (is_empty u)
         | None -> failwith "incorrect") );
+    ( "Testing selling a stock that isnt a memeber of the portfolio" >:: fun _ ->
+      assert_bool "testing no crash when not memeber of portfolio"
+        (User.is_empty (sell "amzn" 1 empty)) );
+    ("Testing to portfolio fucntion" >:: fun _ -> test_port_tolist [] User.empty);
+    ( "Testing to portfolio fucntion" >:: fun _ ->
+      test_port_tolist [ ("TSLA", 100) ] (buy tsla 100 empty) );
+    ( "Testing to portfolio fucntion" >:: fun _ ->
+      test_port_tolist [] (sell "TSLA" 100 (buy tsla 100 empty)) );
   ]
 
 let backtesting_suite =
