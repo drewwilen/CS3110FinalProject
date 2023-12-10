@@ -83,10 +83,6 @@ let optioncontract5 =
 
 let options_suite =
   [
-    ( "" >:: fun _ ->
-      assert_equal (print_endline "hello")
-        (print_endline
-           (string_of_float (round_to_decimals (vega optioncontract2) 3))) );
     ( "black-scholes price call test" >:: fun _ ->
       assert_equal (string_of_float 9.25)
         (string_of_float
@@ -94,6 +90,11 @@ let options_suite =
     ( "black-scholes price put test" >:: fun _ ->
       assert_equal 7.62
         (round_to_decimals (black_scholes_price optioncontract2) 2) );
+    ( "binomial price call test" >:: fun _ ->
+      assert_equal 9.369
+        (round_to_decimals (binomial_price optioncontract1) 3) );
+    ("Implied volatility test" >:: fun _ -> assert_equal 0.19 
+    (round_to_decimals (implied_volatility optioncontract1 9.0) 2));
     ( "delta call test" >:: fun _ ->
       assert_equal 0.705 (round_to_decimals (delta optioncontract1) 3) );
     ( "delta put test" >:: fun _ ->
@@ -124,6 +125,8 @@ let options_suite =
       assert_equal 27.813 (round_to_decimals (vega optioncontract2) 3) );
     ( "vega call test (optioncontract3)" >:: fun _ ->
       assert_equal 44.619 (round_to_decimals (vega optioncontract3) 3) );
+    ( "rho call test (optioncontract3)" >:: fun _ ->
+      assert_equal 30.635 (round_to_decimals (rho optioncontract1) 3) );
     ( "update contract test" >:: fun _ ->
       assert_equal
         {
